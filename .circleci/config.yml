@@ -16,12 +16,16 @@ aliases:
         paths:
           - ~/go/pkg/mod
           - ~/.cache/go-build/
+  download_golang: &download_golang
+   go get golang.org/dl/go1.12.5
+   go1.12.5 download
 
 
 defaults: &defaults
   working_directory: ~/ipfs/go-ipfs
   environment:
     GO111MODULE: "on"
+    GOCC: go1.12.5
     TEST_NO_DOCKER: 1
     TEST_NO_FUSE: 1
     GOPATH: /home/circleci/go
@@ -40,6 +44,7 @@ jobs:
     - checkout
     - *make_out_dirs
     - *restore_gomod
+    - *download_golang
     - run:
         command: make cmd/ipfs-try-build
         environment:
@@ -55,6 +60,7 @@ jobs:
     - checkout
     - *make_out_dirs
     - *restore_gomod
+    - *download_golang
 
     - run: |
         make -j 1 test/unit/gotest.junit.xml \
