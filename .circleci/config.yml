@@ -18,9 +18,9 @@ aliases:
           - ~/.cache/go-build/
   download_golang: &download_golang
     - run:
-      command: go get golang.org/dl/go1.12.5
+        command: go get golang.org/dl/go1.12.5
     - run:
-      command: go1.12.5 download
+        command: go1.12.5 download
 
 defaults: &defaults
   working_directory: ~/ipfs/go-ipfs
@@ -42,10 +42,10 @@ jobs:
   gobuild:
     <<: *defaults
     steps:
+    - *download_golang
     - checkout
     - *make_out_dirs
     - *restore_gomod
-    - *download_golang
     - run:
         command: make cmd/ipfs-try-build
         environment:
@@ -58,10 +58,10 @@ jobs:
   gotest:
     <<: *defaults
     steps:
+    - *download_golang
     - checkout
     - *make_out_dirs
     - *restore_gomod
-    - *download_golang
 
     - run: |
         make -j 1 test/unit/gotest.junit.xml \
