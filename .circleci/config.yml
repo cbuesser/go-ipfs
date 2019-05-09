@@ -32,6 +32,8 @@ defaults: &defaults
     TEST_VERBOSE: 1
     TRAVIS: 1
 
+  machine: true
+
   docker:
     - image: circleci/golang:1.12
 
