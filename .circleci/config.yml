@@ -21,7 +21,7 @@ defaults: &defaults
   working_directory: ~/ipfs/go-ipfs
   environment:
     GO111MODULE: "on"
-    GOCC: go1.12.5
+    GOCC: /home/circleci/go/bin/go1.12.5
     TEST_NO_DOCKER: 1
     TEST_NO_FUSE: 1
     GOPATH: /home/circleci/go
@@ -38,9 +38,9 @@ jobs:
     <<: *defaults
     steps:
     - run:
-        command: go get golang.org/dl/go1.12.5 && go1.12.5 download
-        environment:
-          GO111MODULE: "off"
+        command: go get golang.org/dl/go1.12.5
+    - run:
+        command: /home/circleci/go/bin/go1.12.5 download
     - checkout
     - *make_out_dirs
     - *restore_gomod
@@ -57,9 +57,9 @@ jobs:
     <<: *defaults
     steps:
     - run:
-        command: go get golang.org/dl/go1.12.5 && go1.12.5 download
-        environment:
-          GO111MODULE: "off"
+        command: go get golang.org/dl/go1.12.5
+    - run:
+        command: /home/circleci/go/bin/go1.12.5 download
     - checkout
     - *make_out_dirs
     - *restore_gomod
