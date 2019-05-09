@@ -39,6 +39,8 @@ jobs:
     steps:
     - run:
         command: go get golang.org/dl/go1.12.5 && go1.12.5 download
+        environment:
+          GO111MODULE: "off"
     - checkout
     - *make_out_dirs
     - *restore_gomod
@@ -56,6 +58,8 @@ jobs:
     steps:
     - run:
         command: go get golang.org/dl/go1.12.5 && go1.12.5 download
+        environment:
+          GO111MODULE: "off"
     - checkout
     - *make_out_dirs
     - *restore_gomod
