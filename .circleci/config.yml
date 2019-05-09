@@ -31,11 +31,7 @@ defaults: &defaults
     CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
     TEST_VERBOSE: 1
     TRAVIS: 1
-
   machine: true
-
-  docker:
-    - image: circleci/golang:1.12
 
 jobs:
   gobuild:
