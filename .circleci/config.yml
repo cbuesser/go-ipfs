@@ -17,9 +17,10 @@ aliases:
           - ~/go/pkg/mod
           - ~/.cache/go-build/
   download_golang: &download_golang
-   go get golang.org/dl/go1.12.5
-   go1.12.5 download
-
+    - run:
+      command: go get golang.org/dl/go1.12.5
+    - run:
+      command: go1.12.5 download
 
 defaults: &defaults
   working_directory: ~/ipfs/go-ipfs
