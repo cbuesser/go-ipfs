@@ -88,11 +88,15 @@ jobs:
     <<: *defaults
     steps:
     - run: sudo apt install socat
+    - run:
+        command: go get golang.org/dl/go1.12.5
+    - run:
+        command: /home/circleci/go/bin/go1.12.5 download
     - checkout
     - *make_out_dirs
     - *restore_gomod
 
-    - run: make -O -j 10 coverage/sharness_tests.coverprofile test/sharness/test-results/sharness.xml TEST_GENERATE_JUNIT=1 CONTINUE_ON_S_FAILURE=1
+    - run: make -j 10 coverage/sharness_tests.coverprofile test/sharness/test-results/sharness.xml TEST_GENERATE_JUNIT=1 CONTINUE_ON_S_FAILURE=1
 
     - run:
         when: always
