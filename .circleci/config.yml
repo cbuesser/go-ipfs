@@ -3,6 +3,8 @@ version: 2.0
 aliases:
   make_out_dirs: &make_out_dirs
     run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS/{unit,sharness}
+  install_golang_version: &install_golang_version
+    run: go get golang.org/dl/go1.12.5 && /home/circleci/go/bin/go1.12.5 download
   restore_gomod: &restore_gomod
     restore_cache:
       keys:
@@ -31,16 +33,30 @@ defaults: &defaults
     CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
     TEST_VERBOSE: 1
     TRAVIS: 1
+
   machine: true
+
+sharness_defaults: &sharness_deafults
+  working_directory: ~/ipfs/go-ipfs
+  environment:
+    GO111MODULE: "on"
+    TEST_NO_DOCKER: 1
+    TEST_NO_FUSE: 1
+    GOPATH: /home/circleci/go
+    CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    CIRCLE: 1
+    SERVICE: circle-ci
+    CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+    TEST_VERBOSE: 1
+    TRAVIS: 1
+
+  docker: circleci/golang:1.12
 
 jobs:
   gobuild:
     <<: *defaults
     steps:
-    - run:
-        command: go get golang.org/dl/go1.12.5
-    - run:
-        command: /home/circleci/go/bin/go1.12.5 download
+    - *install_golang_version
     - checkout
     - *make_out_dirs
     - *restore_gomod
@@ -56,10 +72,7 @@ jobs:
   gotest:
     <<: *defaults
     steps:
-    - run:
-        command: go get golang.org/dl/go1.12.5
-    - run:
-        command: /home/circleci/go/bin/go1.12.5 download
+    - *install_golang_version
     - checkout
     - *make_out_dirs
     - *restore_gomod
@@ -85,18 +98,15 @@ jobs:
     - store_artifacts:
         path: /tmp/circleci-test-results
   sharness:
-    <<: *defaults
+    <<: *sharness_defaults
     steps:
     - run: sudo apt install socat
-    - run:
-        command: go get golang.org/dl/go1.12.5
-    - run:
-        command: /home/circleci/go/bin/go1.12.5 download
+    - *install_golang_version
     - checkout
     - *make_out_dirs
     - *restore_gomod
 
-    - run: make -j 10 coverage/sharness_tests.coverprofile test/sharness/test-results/sharness.xml TEST_GENERATE_JUNIT=1 CONTINUE_ON_S_FAILURE=1
+    - run: make -O -j 10 coverage/sharness_tests.coverprofile test/sharness/test-results/sharness.xml TEST_GENERATE_JUNIT=1 CONTINUE_ON_S_FAILURE=1
 
     - run:
         when: always
