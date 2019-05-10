@@ -93,10 +93,10 @@ jobs:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       TEST_VERBOSE: 1
       TRAVIS: 1
-    docker: circleci/golang:1.12
+    docker: 
+      - image: circleci/golang:1.12
     steps:
     - run: sudo apt install socat
-    - *install_golang_version
     - checkout
     - *make_out_dirs
     - *restore_gomod
