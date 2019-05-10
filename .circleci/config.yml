@@ -23,7 +23,7 @@ defaults: &defaults
     GO111MODULE: "on"
     GOCC: /home/circleci/go/bin/go1.12.5
     TEST_NO_DOCKER: 1
-    TEST_NO_FUSE: 1
+    TEST_NO_FUSE: 0
     GOPATH: /home/circleci/go
     CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
     CIRCLE: 1
